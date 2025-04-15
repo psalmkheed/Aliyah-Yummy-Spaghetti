@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Include HTML with Animation</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      /* Styling for smooth animation */
+      .hidden-section {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 0.8s ease-in-out;
+      }
+
+      .visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Scroll Down to Load Content</h1>
+
+    <div id="external-content" class="hidden-section"></div>
+
+    <script>
+      $(document).ready(function () {
+        // Load the external HTML file
+        $("#external-content").load("external.html", function () {
+          console.log("External HTML loaded!");
+        });
+
+        // Function to check if the element is in the viewport
+        function isElementInViewport(el) {
+          var rect = el.getBoundingClientRect();
+          return rect.top < window.innerHeight && rect.bottom >= 0;
+        }
+
+        // Function to add the animation class when element appears
+        function handleScroll() {
+          var section = document.getElementById("external-content");
+          if (isElementInViewport(section)) {
+            $(section).addClass("visible");
+          }
+        }
+
+        // Check scroll event
+        $(window).on("scroll", handleScroll);
+
+        // Initial check in case the section is already in view
+        handleScroll();
+      });
+    </script>
+  </body>
+</html>
